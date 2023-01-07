@@ -14,7 +14,6 @@ const App = () => {
       </StoreProvider>
     </Router>
   )
-
 }
 
 export default App;

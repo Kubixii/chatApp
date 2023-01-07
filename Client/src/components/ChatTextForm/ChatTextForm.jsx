@@ -18,7 +18,7 @@ const ChatTextForm = () => {
             to: parseInt(userID),
             text: chatText
         }
-        joinOnSend(data)
+        chatText !== '' && joinOnSend(data)
         setChatText('')
         io.emit('sendMessage', data)
     }

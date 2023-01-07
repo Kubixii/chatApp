@@ -1,0 +1,8 @@
+.chatWindow {
+    display: block;
+
+    &__messages {
+        display: flex;
+        flex-direction: column;
+    }
+}

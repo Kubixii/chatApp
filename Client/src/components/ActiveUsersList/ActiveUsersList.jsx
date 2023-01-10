@@ -28,15 +28,25 @@ const ActiveUsersList = () => {
 
     const listElements = usersList.map(listUser => {
         if (listUser.username === user.username) return null
-        return <Link
-            key={listUser.id}
-            to={`/${listUser.id}`}
-        >{listUser.username}</Link>
+        return (
+            <div className={style('user')} key={listUser.id}>
+                <Link
+                    className={style('userLink')}
+                    to={`/${listUser.id}`}
+                >{listUser.username}
+                </Link>
+            </div>
+        )
     })
 
     return (
         <div className={style()}>
-            {user.logged && listElements}
+            <div className={style('title')}>
+                <p>Active users</p>
+            </div>
+            <div className={style('usersWrapper')}>
+                {user.logged && listElements}
+            </div>
         </div>
     );
 }

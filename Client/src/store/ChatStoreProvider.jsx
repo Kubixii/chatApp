@@ -12,8 +12,11 @@ const ChatStoreProvider = ({ children }) => {
 
     const { io, user } = useContext(StoreContext)
     const { userID } = useParams()
+    const [chatUser, setChatUser] = useState('')
     const [messages, setMessages] = useState([])
     const [lastMessage, setLastMessage] = useState('')
+    const [isTyping, setIsTyping] = useState(false)
+
     const clearLastMessage = () => setLastMessage('')
 
     useEffect(() => {
@@ -26,11 +29,19 @@ const ChatStoreProvider = ({ children }) => {
             setMessages(data)
         })
 
+        io.on('getUsernameResponse', data => {
+            setChatUser(data)
+        })
+
+        io.on('updateTypingInfoResponse', data => {
+            setIsTyping(data)
+        })
     }, [])
 
     useEffect(() => {
         const messagesUsersIDs = [parseInt(user.id), parseInt(userID)]
         io.emit('getMessages', messagesUsersIDs)
+        io.emit('getUsername', messagesUsersIDs[1])
     }, [userID])
 
 
@@ -42,6 +53,8 @@ const ChatStoreProvider = ({ children }) => {
         <ChatStoreContext.Provider value={{
             messages,
             lastMessage,
+            chatUser,
+            isTyping,
             clearLastMessage,
             joinOnSend
         }}>

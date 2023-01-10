@@ -1,8 +1,19 @@
 .chatWindow {
     display: block;
 
+    &__messagesWrapper {
+        display: flex;
+        align-items: flex-end;
+        border-bottom: solid black 2px;
+    }
+
     &__messages {
+        overflow-y: scroll;
+        height: 80vh;
+        width: 100%;
         display: flex;
         flex-direction: column;
     }
+
+
 }

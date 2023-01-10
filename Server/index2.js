@@ -86,6 +86,16 @@ io.on('connection', (socket) => {
         })
         io.to(socket.id).emit('getMessagesResponse', conversationMessages)
     })
+
+    socket.on('getUsername', userID => {
+        const user = users.filter(user => user.id === userID)
+        io.to(socket.id).emit('getUsernameResponse', user[0].username)
+    })
+
+    socket.on('updateTypingInfo', data => {
+        const user = users.filter(user => user.id === data.to)[0].socketID
+        io.to(user).emit('updateTypingInfoResponse', data.typing)
+    })
 })
 
 

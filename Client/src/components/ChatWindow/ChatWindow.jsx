@@ -16,12 +16,11 @@ const style = bemCssModules(chatwindowStyles)
 
 const ChatWindow = () => {
 
-    const { userID } = useParams()
     const { user } = useContext(StoreContext)
 
     const [messagesElements, setMessagesElements] = useState([])
 
-    const { messages, lastMessage } = useContext(ChatStoreContext)
+    const { messages, lastMessage, chatUser } = useContext(ChatStoreContext)
 
     useMemo(() => {
         const elements = messages.map((message, index) => {
@@ -33,10 +32,11 @@ const ChatWindow = () => {
     return (
         <div className={style()}>
             {!user.logged && <Navigate to='/' />}
-            {userID}
-            <p>CHAT WINDOW HERE</p>
-            <div className={style('messages')}>
-                {messagesElements}
+            <p>{chatUser}</p>
+            <div className={style('messagesWrapper')}>
+                <div className={style('messages')}>
+                    {messagesElements}
+                </div>
             </div>
             <ChatTextForm />
             <MessageAlert user={lastMessage} />

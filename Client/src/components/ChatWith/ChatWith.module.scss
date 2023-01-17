@@ -1,0 +1,12 @@
+.chatWith {
+    display: block;
+    border-bottom: solid black 2px;
+    padding: 1vw;
+    text-align: center;
+
+    &>p {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}

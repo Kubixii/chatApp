@@ -1,6 +1,11 @@
 .message {
-    margin: 0.5vw;
+    margin: 0.1vw;
     width: fit-content;
     max-width: 45%;
-    border: solid red 1px;
+    padding: 0.8vw;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
+    word-wrap: break-word;
+    word-break: break-all;
 }

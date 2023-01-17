@@ -1,0 +1,42 @@
+.chatForm {
+    display: block;
+    margin: 0.5em;
+
+    &__messageForm {
+        height: 2em;
+        display: grid;
+        grid-template-columns: 97% 1fr;
+    }
+
+    &__textMessage {
+        background-color: #eeeeee;
+        padding: 0.5em;
+        border: none;
+        border-radius: 5em;
+        outline: invert;
+
+        &:focus {
+            background-color: #dddddd
+        }
+    }
+
+    &__typingIndicator {
+        display: flex;
+    }
+
+    &__sendButton {
+        border: none;
+        height: inherit;
+        background-color: transparent;
+        cursor: pointer;
+
+        &>img {
+            height: 2em;
+        }
+
+        &:hover>img {
+            filter: drop-shadow(0px 0px 2px #aaaaaa);
+            -webkit-filter: drop-shadow(0px 0px 2px #aaaaaa);
+        }
+    }
+}

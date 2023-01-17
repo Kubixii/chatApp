@@ -34,6 +34,7 @@ const ChatStoreProvider = ({ children }) => {
         })
 
         io.on('updateTypingInfoResponse', data => {
+            console.log(data);
             setIsTyping(data)
         })
     }, [])

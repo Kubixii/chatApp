@@ -1,19 +1,41 @@
 .chatWindow {
     display: block;
+    border-right: solid black 2px;
 
     &__messagesWrapper {
+        margin-right: 0.2em;
         display: flex;
         align-items: flex-end;
-        border-bottom: solid black 2px;
+        border-bottom: 20px solid transparent;
+        border-image: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 2%, rgba(255, 255, 255, 1) 1%);
+        border-image-slice: 100;
+        overflow-y: scroll;
+        min-height: 76vh;
+
+        &::-webkit-scrollbar {
+            width: 0.4em;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #8888;
+            border-radius: 10em;
+
+            &:hover {
+                background-color: #555;
+            }
+        }
     }
 
     &__messages {
-        overflow-y: scroll;
-        height: 80vh;
-        width: 100%;
+        padding: 0 0 1em 0;
+        height: 70vh;
+        width: 99%;
         display: flex;
         flex-direction: column;
+
     }
-
-
 }

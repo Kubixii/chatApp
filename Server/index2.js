@@ -76,6 +76,7 @@ io.on('connection', (socket) => {
         messages.push(message)
         const user = users.filter(user => user.id === data.to)[0].socketID
         io.to(user).emit('reciveMessage', message)
+        io.to(user).emit('updateTypingInfoResponse', false)
     })
 
     socket.on('getMessages', users => {

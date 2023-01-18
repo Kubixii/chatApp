@@ -1,6 +1,44 @@
-.alert {
-    border: solid red 1px;
+.alertWrapper {
     position: absolute;
-    bottom: 2%;
-    right: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0.2em;
+
+    @keyframes appearAndHide {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        10% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        90% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(-100%)
+        }
+    }
+
+    &__alert {
+        width: 20em;
+        padding: 1em;
+        background-color: #dddd;
+        border-radius: 1em;
+        transform: translateY(-100%);
+        opacity: 0;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-transform: uppercase;
+        box-shadow: 0px 0px 5px black;
+        animation: appearAndHide 5s ease-in-out forwards;
+    }
+
+
 }

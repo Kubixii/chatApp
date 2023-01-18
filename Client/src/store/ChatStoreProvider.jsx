@@ -34,13 +34,20 @@ const ChatStoreProvider = ({ children }) => {
         })
 
         io.on('updateTypingInfoResponse', data => {
+            // if (parseInt(userID) === data.from)
+            console.log("is true:", parseInt(userID) === data.from);
             console.log(data);
-            setIsTyping(data)
+            if (parseInt(userID) === data.from) {
+                console.log("isTyping changed");
+                setIsTyping(data.typing)
+            }
         })
     }, [])
 
     useEffect(() => {
         const messagesUsersIDs = [parseInt(user.id), parseInt(userID)]
+        console.log(`user: ${user.username} chat with: ${chatUser}`);
+
         io.emit('getMessages', messagesUsersIDs)
         io.emit('getUsername', messagesUsersIDs[1])
     }, [userID])
@@ -56,6 +63,7 @@ const ChatStoreProvider = ({ children }) => {
             lastMessage,
             chatUser,
             isTyping,
+            userID: parseInt(userID),
             clearLastMessage,
             joinOnSend
         }}>

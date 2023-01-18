@@ -12,12 +12,14 @@ const MessageAlert = ({ user }) => {
     const { clearLastMessage } = useContext(ChatStoreContext)
 
     useEffect(() => {
-        setTimeout(() => clearLastMessage(), 15000)
-    })
+        setTimeout(clearLastMessage(), 6000)
+    }, [])
 
     return user === '' ? null : (
         <div className={style()}>
-            <p>user {user} sent a message</p>
+            <div className={style('alert')}>
+                <p>user {user} sent a message</p>
+            </div>
         </div>
     );
 }

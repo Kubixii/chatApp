@@ -7,7 +7,6 @@ import { default as chattextformStyles } from './ChatTextForm.module.scss'
 import sendIcon from './assets/send.png'
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 const style = bemCssModules(chattextformStyles)
@@ -15,10 +14,11 @@ const style = bemCssModules(chattextformStyles)
 const ChatTextForm = () => {
     const [chatText, setChatText] = useState('')
     const handleText = e => setChatText(e.target.value)
-    const { userID } = useParams()
     const { io, user } = useContext(StoreContext)
-    const { joinOnSend, chatUser, isTyping } = useContext(ChatStoreContext)
-
+    const { userID, joinOnSend, chatUser, isTyping } = useContext(ChatStoreContext)
+    useEffect(() => {
+        setChatText('')
+    }, [userID])
     const send = (e) => {
         e.preventDefault()
         if (chatText === '') return null
@@ -30,10 +30,6 @@ const ChatTextForm = () => {
         chatText !== '' && joinOnSend(data)
         setChatText('')
         io.emit('sendMessage', data)
-        const typingData = {
-            to: parseInt(userID),
-            typing: false
-        }
     }
 
     useEffect(() => {
@@ -41,6 +37,7 @@ const ChatTextForm = () => {
         if (chatText === '') return () => clearTimeout(timer)
         else {
             const data = {
+                from: user.id,
                 to: parseInt(userID),
                 typing: true
             }
@@ -48,6 +45,7 @@ const ChatTextForm = () => {
         }
         timer = setTimeout(() => {
             const data = {
+                from: user.id,
                 to: parseInt(userID),
                 typing: false
             }

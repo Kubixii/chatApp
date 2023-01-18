@@ -76,7 +76,11 @@ io.on('connection', (socket) => {
         messages.push(message)
         const user = users.filter(user => user.id === data.to)[0].socketID
         io.to(user).emit('reciveMessage', message)
-        io.to(user).emit('updateTypingInfoResponse', false)
+        io.to(user).emit('updateTypingInfoResponse', {
+            from: data.from,
+            to: data.to,
+            typing: false
+        })
     })
 
     socket.on('getMessages', users => {
@@ -95,7 +99,7 @@ io.on('connection', (socket) => {
 
     socket.on('updateTypingInfo', data => {
         const user = users.filter(user => user.id === data.to)[0].socketID
-        io.to(user).emit('updateTypingInfoResponse', data.typing)
+        io.to(user).emit('updateTypingInfoResponse', data)
     })
 })
 

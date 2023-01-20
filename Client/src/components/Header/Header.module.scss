@@ -1,11 +1,10 @@
 .header {
-    display: grid;
-    gap: 5rem;
-    grid-template-columns: 90% 1fr;
+    display: flex;
     height: 3vh;
     padding: 1vw;
     border-bottom: solid black 2px;
     font-size: larger;
+    justify-content: space-between;
 
     &__currentUser {
         align-self: flex-start;

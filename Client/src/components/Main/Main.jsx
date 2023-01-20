@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Chat from '../Chat/Chat';
 import ChatStoreProvider from '../../store/ChatStoreProvider';
-import ChatWindow from '../ChatWindow/ChatWindow';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
 import NoChat from '../NoChat/NoChat'
@@ -23,7 +23,7 @@ const Main = () => {
                 <Route path='*' element={<NoChat />} />
                 <Route exact path='/' element={<NoChat />} />
                 <Route exact path='/login' element={<Login />} />
-                <Route exact path='/:userID' element={<ChatStoreProvider><ChatWindow /></ChatStoreProvider>} />
+                <Route exact path='/:userID' element={<ChatStoreProvider><Chat /></ChatStoreProvider>} />
             </Routes>
         </div>
     );

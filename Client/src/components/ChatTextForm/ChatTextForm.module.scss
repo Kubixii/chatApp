@@ -3,17 +3,21 @@
     margin: 0.5em;
 
     &__messageForm {
-        height: 2em;
+        height: fit-content;
         display: grid;
         grid-template-columns: 97% 1fr;
     }
 
     &__textMessage {
         background-color: #eeeeee;
-        padding: 0.5em;
+        height: 1.3em;
+        max-height: 5em;
+        max-width: 99%;
+        padding: 0.6em 1em 0.6em 1em;
         border: none;
         border-radius: 5em;
         outline: invert;
+        resize: none;
 
         &:focus {
             background-color: #dddddd
@@ -25,6 +29,7 @@
     }
 
     &__sendButton {
+        align-self: center;
         border: none;
         height: inherit;
         background-color: transparent;

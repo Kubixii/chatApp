@@ -23,40 +23,47 @@ const ChatWindow = () => {
 
     const [messagesElements, setMessagesElements] = useState([])
 
-    const { messages, lastMessage, chatUser } = useContext(ChatStoreContext)
+    const { messages } = useContext(ChatStoreContext)
 
     useEffect(() => {
+
+        window.addEventListener('resize', handleWindowResize)
+
         const elements = messages.map((message, index) => {
-            const isPrevMessageFromSameSender = index === 0 ? true : messages[index - 1].from === message.from
+            const isPrevMessageFromSameSender = index === 0 ? true : messages[index - 1].from === message.from.id
             return <Message
                 key={index}
                 text={message.text}
-                isSentByCurrentUser={message.from === user.id}
+                isSentByCurrentUser={message.from.id === user.id}
                 isPrevMessageFromSameSender={isPrevMessageFromSameSender}
             />
         })
         setMessagesElements(prev => {
-            setTimeout(() => {
-                const messagesWrapper = document.getElementsByClassName(messageStyle())
-                if (prev.length === 0) messagesWrapper[messagesWrapper.length - 1].scrollIntoView()
-                else messagesWrapper[messagesWrapper.length - 1].scrollIntoView({ behavior: 'smooth' })
-            }, 1)
+            setTimeout(() => scrollToLastMessage(prev, false), 1)
             return elements
         })
+
+        return () => window.removeEventListener('resize', handleWindowResize)
     }, [messages])
+
+    const handleWindowResize = () => {
+        scrollToLastMessage(messages, true)
+    }
+
+    const scrollToLastMessage = (messages, isOnResize) => {
+        const messagesWrapper = document.getElementsByClassName(messageStyle())
+        if (messages.length === 0 || isOnResize) { messagesWrapper[messagesWrapper.length - 1].scrollIntoView() }
+        else messagesWrapper[messagesWrapper.length - 1].scrollIntoView({ behavior: 'smooth' })
+    }
 
     return (
         <div className={style()}>
-            {!user.logged && <Navigate to='/' />}
-            <ChatWith user={chatUser} />
             <div className={style('messagesWrapper')}>
                 <div className={style('messages')}>
                     {messagesElements}
                 </div>
             </div>
             <ChatTextForm />
-            <MessageAlert user={lastMessage} />
-            {/* <MessageAlert user={"eee"} /> */}
         </div>
     );
 }

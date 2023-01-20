@@ -74,18 +74,18 @@ io.on('connection', (socket) => {
         }
         id++;
         messages.push(message)
-        const user = users.filter(user => user.id === data.to)[0].socketID
+        const user = users.filter(user => user.id === data.to.id)[0].socketID
         io.to(user).emit('reciveMessage', message)
         io.to(user).emit('updateTypingInfoResponse', {
-            from: data.from,
-            to: data.to,
+            from: data.from.id,
+            to: data.to.id,
             typing: false
         })
     })
 
     socket.on('getMessages', users => {
         const conversationMessages = messages.filter(message => {
-            if ((message.from === users[0] && message.to === users[1]) || (message.from === users[1] && message.to === users[0])) {
+            if ((message.from.id === users[0] && message.to.id === users[1]) || (message.from.id === users[1] && message.to.id === users[0])) {
                 return message
             }
         })
@@ -94,7 +94,8 @@ io.on('connection', (socket) => {
 
     socket.on('getUsername', userID => {
         const user = users.filter(user => user.id === userID)
-        io.to(socket.id).emit('getUsernameResponse', user[0].username)
+        const userObject = { name: user[0].username, id: user[0].id };
+        io.to(socket.id).emit('getUsernameResponse', userObject)
     })
 
     socket.on('updateTypingInfo', data => {

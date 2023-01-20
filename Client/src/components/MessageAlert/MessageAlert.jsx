@@ -7,15 +7,16 @@ import { useEffect } from 'react'
 
 const style = bemCssModules(messagealertStyles)
 
-const MessageAlert = ({ user }) => {
+const MessageAlert = ({ user, offset }) => {
 
-    const { clearLastMessage } = useContext(ChatStoreContext)
+    const { resetLastMessage } = useContext(ChatStoreContext)
 
     useEffect(() => {
-        setTimeout(clearLastMessage(), 6000)
+        setTimeout(() => {
+            resetLastMessage()
+        }, 6000)
     }, [])
-
-    return user === '' ? null : (
+    return (
         <div className={style()}>
             <div className={style('alert')}>
                 <p>user {user} sent a message</p>

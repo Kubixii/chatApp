@@ -1,0 +1,23 @@
+.input {
+    &>div {
+        height: fit-content;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #8888;
+            border-radius: 10em;
+
+            &:hover {
+                background-color: #555;
+            }
+        }
+    }
+}

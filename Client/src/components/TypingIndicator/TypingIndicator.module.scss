@@ -1,5 +1,48 @@
 .indicator {
     display: block;
+    margin: 0.5em 0em;
+    overflow: hidden;
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(100%);
+            opacity: 0.2;
+        }
+
+        to {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateY(100%);
+            opacity: 0.2;
+        }
+    }
+
+
+    &__text {
+        opacity: 0.2;
+        transform: translate(50%);
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+
+    &__slideIn {
+        animation-name: slideIn;
+    }
+
+    &__slideOut {
+        animation-name: slideOut;
+    }
 
     @keyframes dots {
         0% {
@@ -23,8 +66,10 @@
         }
     }
 
+
     &__dots::after {
         content: '';
         animation: dots 1s infinite;
     }
+
 }

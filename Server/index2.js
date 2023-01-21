@@ -21,7 +21,9 @@ io.on('connection', (socket) => {
 
     const logout = () => {
         users.map(user => {
-            if (user.socketID === socket.id) user.active = false
+            const filtered = user.socketID.filter(id => id !== socket.id)
+            user.socketID = filtered
+            if (user.socketID.length === 0) user.active = false
             return user
         })
     }
@@ -44,7 +46,7 @@ io.on('connection', (socket) => {
         const found = users.filter(user => {
             if (user.username === data.login && user.password === data.pass) {
                 user.active = true
-                user.socketID = socket.id
+                user.socketID.push(socket.id)
             }
             return user.username === data.login && user.password === data.pass
         })
@@ -75,11 +77,14 @@ io.on('connection', (socket) => {
         id++;
         messages.push(message)
         const user = users.filter(user => user.id === data.to.id)[0].socketID
-        io.to(user).emit('reciveMessage', message)
-        io.to(user).emit('updateTypingInfoResponse', {
-            from: data.from.id,
-            to: data.to.id,
-            typing: false
+
+        user.forEach(socketId => {
+            io.to(socketId).emit('reciveMessage', message)
+            io.to(socketId).emit('updateTypingInfoResponse', {
+                from: data.from.id,
+                to: data.to.id,
+                typing: false
+            })
         })
     })
 
@@ -100,7 +105,7 @@ io.on('connection', (socket) => {
 
     socket.on('updateTypingInfo', data => {
         const user = users.filter(user => user.id === data.to)[0].socketID
-        io.to(user).emit('updateTypingInfoResponse', data)
+        user.forEach(socketId => io.to(socketId).emit('updateTypingInfoResponse', data))
     })
 })
 

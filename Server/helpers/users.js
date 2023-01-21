@@ -4,7 +4,7 @@ const users = [
         username: "Kubixii",
         password: "Qwertyuiop0",
         roomName: 'QWER',
-        socketID: '',
+        socketID: [],
         active: false,
     },
     {
@@ -12,7 +12,7 @@ const users = [
         username: "Kubixii1",
         password: "Qwertyuiop0",
         roomName: 'ASDF',
-        socketID: '',
+        socketID: [],
         active: false,
     },
     {
@@ -20,7 +20,7 @@ const users = [
         username: "Kubixii2",
         password: "Qwertyuiop0",
         roomName: 'ZXCV',
-        socketID: '',
+        socketID: [],
         active: false,
     },
 ]

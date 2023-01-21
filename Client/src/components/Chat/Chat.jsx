@@ -5,8 +5,12 @@ import MessageAlert from '../MessageAlert/MessageAlert';
 import { Navigate } from 'react-router-dom';
 import React from 'react';
 import { StoreContext } from '../../store/StoreProvider';
+import bemCssModules from 'bem-css-modules'
+import { default as chatStyles } from './Chat.module.scss'
 import { useContext } from 'react';
 import { useEffect } from 'react';
+
+const style = bemCssModules(chatStyles)
 
 const Chat = () => {
     const { user, io } = useContext(StoreContext)
@@ -29,7 +33,7 @@ const Chat = () => {
         return parseInt(lastMessage.id) === parseInt(-1) ? null : <MessageAlert key={lastMessage.messageID} user={lastMessage.from.name} offset={lastMessage.messageID} />
     })
     return (
-        <div>
+        <div className={style()}>
             {!user.logged && <Navigate to='/' />}
             <ChatWith user={chatUserRef.current.name} />
             <ChatWindow />

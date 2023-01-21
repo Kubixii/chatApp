@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react'
-
 import React from 'react'
 import bemCssModules from 'bem-css-modules'
 import { default as chatmessageinputStyles } from './ChatMessageInput.module.scss'
 import { useEffect } from 'react'
+import { useRef } from 'react'
 
 const style = bemCssModules(chatmessageinputStyles)
 

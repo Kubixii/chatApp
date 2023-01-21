@@ -62,7 +62,7 @@ const ChatTextForm = () => {
                 typing: false
             }
             io.emit('updateTypingInfo', data)
-        }, 3000)
+        }, 2000)
         return () => clearTimeout(timer)
     }, [chatText])
 
@@ -82,7 +82,7 @@ const ChatTextForm = () => {
                     <img src={sendIcon} alt="send" />
                 </button>
             </form>
-            {isTyping && <TypingIndicator who={chatUserRef.current.name} />}
+            <TypingIndicator who={chatUserRef.current.name} isTyping={isTyping} />
         </div>
     );
 }

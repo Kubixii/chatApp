@@ -26,7 +26,8 @@ const ChatWindow = () => {
     const { messages } = useContext(ChatStoreContext)
 
     useEffect(() => {
-
+        const messagesWrapperElement = document.getElementsByClassName(style('messagesWrapper'))[0];
+        messagesWrapperElement.addEventListener('resize', handleWindowResize)
         window.addEventListener('resize', handleWindowResize)
 
         const elements = messages.map((message, index) => {
@@ -43,7 +44,10 @@ const ChatWindow = () => {
             return elements
         })
 
-        return () => window.removeEventListener('resize', handleWindowResize)
+        return () => {
+            messagesWrapperElement.removeEventListener('resize', handleWindowResize)
+            window.removeEventListener('resize', handleWindowResize)
+        }
     }, [messages])
 
     const handleWindowResize = () => {
@@ -58,12 +62,14 @@ const ChatWindow = () => {
 
     return (
         <div className={style()}>
-            <div className={style('messagesWrapper')}>
-                <div className={style('messages')}>
-                    {messagesElements}
+            <div className={style('chatWindow')}>
+                <div className={style('messagesWrapper')}>
+                    <div className={style('messages')}>
+                        {messagesElements}
+                    </div>
                 </div>
+                <ChatTextForm />
             </div>
-            <ChatTextForm />
         </div>
     );
 }

@@ -1,9 +1,9 @@
 .chatForm {
     display: block;
     margin: 0.5em;
+    min-height: 5em;
 
     &__messageForm {
-        height: fit-content;
         display: grid;
         grid-template-columns: 97% 1fr;
     }
@@ -22,10 +22,6 @@
         &:focus {
             background-color: #dddddd
         }
-    }
-
-    &__typingIndicator {
-        display: flex;
     }
 
     &__sendButton {

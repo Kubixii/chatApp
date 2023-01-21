@@ -13,7 +13,7 @@ const Header = () => {
     return (
         <div className={style()}>
             <div className={style('currentUser')}>
-                <p>Logged as: <span className={style('usernameHighlight')}>{user.username}</span></p>
+                <p>Logged in as: <span className={style('usernameHighlight')}>{user.username}</span></p>
             </div>
             <div className={style('logoutElement')}>
                 {user.logged && <button onClick={logout} className={style('logout')}>Logout</button>}

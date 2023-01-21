@@ -12,6 +12,7 @@
 
     &__usernameHighlight {
         color: gray;
+        font-weight: bold;
         text-transform: uppercase;
     }
 
@@ -21,14 +22,15 @@
     }
 
     &__logout {
-        padding: 0.5vw;
+        padding: 0.2em 1em;
+        border-radius: 1em;
         border: none;
         background-color: transparent;
-        box-shadow: 0px 0px 3px black;
+        box-shadow: 0px 0px 2px black;
         cursor: pointer;
 
         &:active {
-            box-shadow: 0px 0px 1px black;
+            background-color: #ddd
         }
     }
 }

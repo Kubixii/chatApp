@@ -15,7 +15,7 @@ const initLastMessageArray = [{ name: '', id: -1, messageID: 0 }]
 
 const ChatStoreProvider = ({ children }) => {
 
-    const { io, user } = useContext(StoreContext)
+    const { io, user, addUnreadMessage, deleteUnreadMessage } = useContext(StoreContext)
     const { userID } = useParams()
     const [chatUser, setChatUser] = useState(initUserObject)
     const [messages, setMessages] = useState([])
@@ -32,14 +32,17 @@ const ChatStoreProvider = ({ children }) => {
 
     const handleReciveMessage = (data, isCurrentChatUser) => {
         if (isCurrentChatUser) setMessages(prev => [...prev, data])
-        else setLastMessages(prev => {
-            const messageID = prev[prev.length - 1].messageID + 1
-            const lastMessageObject = {
-                ...data,
-                messageID
-            }
-            return [...prev, lastMessageObject]
-        })
+        else {
+            addUnreadMessage(data)
+            setLastMessages(prev => {
+                const messageID = prev[prev.length - 1].messageID + 1
+                const lastMessageObject = {
+                    ...data,
+                    messageID
+                }
+                return [...prev, lastMessageObject]
+            })
+        }
     }
 
     useEffect(() => {
@@ -56,6 +59,7 @@ const ChatStoreProvider = ({ children }) => {
 
 
     useEffect(() => {
+        deleteUnreadMessage(userID)
         const messagesUsersIDs = [parseInt(user.id), parseInt(userID)]
         io.emit('getMessages', messagesUsersIDs)
         io.emit('getUsername', messagesUsersIDs[1])

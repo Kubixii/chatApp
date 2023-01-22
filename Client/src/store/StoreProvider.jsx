@@ -17,6 +17,21 @@ const initUserState = {
 const StoreProvider = ({ children }) => {
     const [user, setUser] = useState(initUserState)
 
+    const [unreadMessages, setUnreadMessages] = useState([])
+    const addUnreadMessage = data => setUnreadMessages(prev => [...prev, data])
+
+    const deleteUnreadMessage = userID => {
+        setUnreadMessages(prev => {
+            const messages = prev.filter(message => message.from.id !== parseInt(userID));
+            const data = {
+                userID,
+                messages
+            }
+            io.emit('deleteUnreadMessage', data)
+            return messages
+        })
+    }
+
     const attemptLogin = (login, pass) => {
         io.emit('attemptLogin', { login, pass })
     }
@@ -29,12 +44,17 @@ const StoreProvider = ({ children }) => {
         setUser(data.user)
     })
 
+    io.on('getUnreadMessagesResponse', data => setUnreadMessages(data))
+
     return (
         <StoreContext.Provider value={{
             io,
             user,
+            unreadMessages,
+            deleteUnreadMessage,
             attemptLogin,
-            logout
+            logout,
+            addUnreadMessage
         }}>
             {children}
         </StoreContext.Provider>

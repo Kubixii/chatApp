@@ -32,6 +32,7 @@ const Chat = () => {
     const messageAlertElements = lastMessages.map(lastMessage => {
         return parseInt(lastMessage.id) === parseInt(-1) ? null : <MessageAlert key={lastMessage.messageID} user={lastMessage.from.name} offset={lastMessage.messageID} />
     })
+
     return (
         <div className={style()}>
             {!user.logged && <Navigate to='/' />}

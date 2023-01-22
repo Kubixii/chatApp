@@ -9,7 +9,6 @@ const App = () => {
   return (
     <Router>
       <StoreProvider>
-        <ActiveUsersList />
         <Main />
       </StoreProvider>
     </Router>

@@ -76,16 +76,18 @@ io.on('connection', (socket) => {
         }
         id++;
         messages.push(message)
-        const user = users.filter(user => user.id === data.to.id)[0].socketID
-
-        user.forEach(socketId => {
-            io.to(socketId).emit('reciveMessage', message)
-            io.to(socketId).emit('updateTypingInfoResponse', {
-                from: data.from.id,
-                to: data.to.id,
-                typing: false
+        const user = users.filter(user => user.id === data.to.id)[0]
+        if (user.active) {
+            user.socketID.forEach(socketId => {
+                io.to(socketId).emit('reciveMessage', message)
+                io.to(socketId).emit('updateTypingInfoResponse', {
+                    from: data.from.id,
+                    to: data.to.id,
+                    typing: false
+                })
             })
-        })
+        }
+        else { user.unreadMessages.push(message) }
     })
 
     socket.on('getMessages', users => {
@@ -106,6 +108,17 @@ io.on('connection', (socket) => {
     socket.on('updateTypingInfo', data => {
         const user = users.filter(user => user.id === data.to)[0].socketID
         user.forEach(socketId => io.to(socketId).emit('updateTypingInfoResponse', data))
+    })
+
+    socket.on('getUnreadMessages', data => {
+        const { socketID, unreadMessages } = users.filter(user => user.id === data.id)[0]
+        socketID.forEach(socketId => {
+            io.to(socketId).emit('getUnreadMessagesResponse', unreadMessages)
+        })
+    })
+
+    socket.on('deleteUnreadMessage', data => {
+        users.filter(user => user.id === data.userID).unreadMessages = data.messages
     })
 })
 

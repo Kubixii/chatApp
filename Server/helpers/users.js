@@ -6,6 +6,7 @@ const users = [
         roomName: 'QWER',
         socketID: [],
         active: false,
+        unreadMessages: []
     },
     {
         id: 1,
@@ -14,6 +15,7 @@ const users = [
         roomName: 'ASDF',
         socketID: [],
         active: false,
+        unreadMessages: []
     },
     {
         id: 2,
@@ -22,6 +24,16 @@ const users = [
         roomName: 'ZXCV',
         socketID: [],
         active: false,
+        unreadMessages: []
+    },
+    {
+        id: 3,
+        username: "Kubixii3",
+        password: "Qwertyuiop0",
+        roomName: 'MNBV',
+        socketID: [],
+        active: false,
+        unreadMessages: []
     },
 ]
 

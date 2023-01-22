@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import ActiveUsersList from '../ActiveUsersList/ActiveUsersList';
 import Chat from '../Chat/Chat';
 import ChatStoreProvider from '../../store/ChatStoreProvider';
 import Header from '../Header/Header';
@@ -17,15 +18,18 @@ const Main = () => {
     const { user } = useContext(StoreContext)
 
     return (
-        <div className={style()}>
-            <Header />
-            <Routes>
-                <Route path='*' element={<NoChat />} />
-                <Route exact path='/' element={<NoChat />} />
-                <Route exact path='/login' element={<Login />} />
-                <Route exact path='/:userID' element={<ChatStoreProvider><Chat /></ChatStoreProvider>} />
-            </Routes>
-        </div>
+        <>
+            <ActiveUsersList />
+            <div className={style()}>
+                <Header />
+                <Routes>
+                    <Route path='*' element={<NoChat />} />
+                    <Route exact path='/' element={<NoChat />} />
+                    <Route exact path='/login' element={<Login />} />
+                    <Route exact path='/:userID' element={<ChatStoreProvider><Chat /></ChatStoreProvider>} />
+                </Routes>
+            </div>
+        </>
     );
 }
 

@@ -7,16 +7,12 @@ import Header from '../Header/Header';
 import Login from '../Login/Login';
 import NoChat from '../NoChat/NoChat'
 import React from 'react';
-import { StoreContext } from '../../store/StoreProvider';
 import bemCssModules from 'bem-css-modules'
 import { default as mainStyles } from './Main.module.scss'
-import { useContext } from 'react';
 
 const style = bemCssModules(mainStyles)
 
 const Main = () => {
-    const { user } = useContext(StoreContext)
-
     return (
         <>
             <ActiveUsersList />

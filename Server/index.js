@@ -10,82 +10,120 @@ const { users } = require('./helpers/users')
 const io = require('socket.io')(http, {
     cors: {
         origin: true,
-        // [
-        //     'http://127.0.0.1:5173/',
-        //     'http://192.168.1.10:5173/'
-        // ],
         methods: ["GET", "POST"],
     },
 });
 
-let openedRooms = [];
+let id = 0;
+const messages = []
 
 io.on('connection', (socket) => {
+
+    const logout = () => {
+        users.map(user => {
+            const filtered = user.socketID.filter(id => id !== socket.id)
+            user.socketID = filtered
+            if (user.socketID.length === 0) user.active = false
+            return user
+        })
+    }
+
     console.log(`user with id ${socket.id} has connected`);
 
+    socket.on('logout', () => logout())
+
     socket.on('disconnect', () => {
+        logout()
         console.log(`user has disconnected`);
     })
 
+    socket.on('getActiveUsers', () => {
+        const active = users.filter(user => user.active)
+        io.emit('getActiveUsersResponse', active)
+    })
+
     socket.on('attemptLogin', data => {
-        const found = users.filter(item => {
-            if (item.username === data.login && item.password === data.pass) {
-                item.socketID = socket.id
+        const found = users.filter(user => {
+            if (user.username === data.login && user.password === data.pass) {
+                user.active = true
+                user.socketID.push(socket.id)
             }
-            return item.username === data.login && item.password === data.pass
+            return user.username === data.login && user.password === data.pass
         })
 
         if (found.length === 0) {
-            io.emit('loginResponse', { error: "user not found", message: "błędny login lub hasło", logged: false })
+            io.to(socket.id).emit('loginResponse', { error: "user not found", message: "błędny login lub hasło", user: { logged: false } })
             return 0;
         }
-        io.emit('loginResponse', { error: "login succesful", message: "pomyślnie zalogowano", logged: true })
-
-    })
-
-    socket.on('requestActiveUsers', () => {
-        const active = users.filter(user => {
-            if (user.socketID !== '') return {
-                username: user.username,
-                socketID: user.socketID
+        io.to(socket.id).emit('loginResponse', {
+            error: null,
+            message: "pomyślnie zalogowano",
+            user: {
+                logged: true,
+                id: found[0].id,
+                username: found[0].username
             }
         })
-
-        io.emit('activeUsersResponse', active)
     })
 
+    socket.on('sendMessage', data => {
+        const message = {
+            ...data,
+            id,
+            time: new Date().toISOString()
+        }
+        id++;
+        messages.push(message)
+        const user = users.filter(user => user.id === data.to.id)[0]
+        if (user.active) {
+            user.socketID.forEach(socketId => {
+                io.to(socketId).emit('reciveMessage', message)
+                io.to(socketId).emit('updateTypingInfoResponse', {
+                    from: data.from.id,
+                    to: data.to.id,
+                    typing: false
+                })
+            })
+        }
+        else { user.unreadMessages.push(message) }
+    })
 
-    socket.on('logout', (data) => {
-        users.map(user => {
-            if (user.socketID === data.socketID) {
-                user.socketID = ''
+    socket.on('getMessages', users => {
+        const conversationMessages = messages.filter(message => {
+            if ((message.from.id === users[0] && message.to.id === users[1]) || (message.from.id === users[1] && message.to.id === users[0])) {
+                return message
             }
-            return user
         })
-
-        console.log(users);
+        io.to(socket.id).emit('getMessagesResponse', conversationMessages)
     })
 
-    // socket.on('typingState', (data) => {
-    //     io.emit('typingStateResponse', data)
-    // })
+    socket.on('getUsername', userID => {
+        const user = users.filter(user => user.id === userID)
+        const userObject = { name: user[0].username, id: user[0].id };
+        io.to(socket.id).emit('getUsernameResponse', userObject)
+    })
 
-    // socket.on('message', (data) => {
-    //     io.to('room').emit('response', data)
-    // })
+    socket.on('updateTypingInfo', data => {
+        const user = users.filter(user => user.id === data.to)[0].socketID
+        user.forEach(socketId => io.to(socketId).emit('updateTypingInfoResponse', data))
+    })
 
-    // socket.on('joinRoom', () => {
-    //     socket.join('room')
-    // })
+    socket.on('getUnreadMessages', data => {
+        const { socketID, unreadMessages } = users.filter(user => user.id === data.id)[0]
+        socketID.forEach(socketId => {
+            io.to(socketId).emit('getUnreadMessagesResponse', unreadMessages)
+        })
+    })
+
+    socket.on('deleteUnreadMessage', data => {
+        users.filter(user => user.id === data.userID).unreadMessages = data.messages
+    })
 })
+
 
 app.use(cors());
-
-app.get('/api', (req, res) => {
-    console.log('recived data');
-})
-
 
 http.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`);
 })
+
